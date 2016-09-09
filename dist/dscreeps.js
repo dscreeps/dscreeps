@@ -1,12 +1,17 @@
 'use strict';
-// dscreeps.js v0.1.0
+// dscreeps.js v0.2.0
 
 module.exports = config => {
-  
+  memoryUsername();
 };
 
-if (!Game.Memory.username) {
-  Game.Memory.username = Game.spawns[Object.keys(Game.spawns)[0]].owner.username;
+function memoryUsername() {
+  if (!Game.Memory.username) {
+    const spawnIds = Object.keys(Game.spawns);
+    if (spawnIds.length > 0) {
+      Game.Memory.username = Game.spawns[spawnIds[0]].owner.username;
+    }
+  }
 }
 
 Creep.prototype.moveToAnd =
