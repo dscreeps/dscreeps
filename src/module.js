@@ -1,3 +1,1 @@
-module.exports = config => {
-  memoryUsername();
-};
+module.exports = config => {};
