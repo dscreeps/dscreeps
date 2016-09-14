@@ -1,16 +1,36 @@
 'use strict';
-// dscreeps.js v0.2.0
+module.exports.version = '0.3.0';
 
-module.exports = config => {};
+module.exports.loop = config => {
+  memoryRoomDatas();
+  _.each(Game.rooms, controlRoom);
+};
+
+function controlRoom(room) {}
 
 function getMyUsername() {
-  if (!Game.Memory.myUsername) {
+  if (!Memory.myUsername) {
     const spawnIds = Object.keys(Game.spawns);
     if (spawnIds.length > 0) {
-      Game.Memory.myUsername = Game.spawns[spawnIds[0]].owner.username;
+      Memory.myUsername = Game.spawns[spawnIds[0]].owner.username;
     }
   }
-  return Game.Memory.myUsername;
+  return Memory.myUsername;
+}
+
+function getRoomDatas() {
+  Game.Memory.roomDatas = Game.Memory.roomDatas || {};
+  return Game.Memory.roomDatas;
+}
+
+function memoryRoomDatas() {
+  _.each(Game.rooms, room => {
+    const roomData = {
+      lastTime: Game.time,
+      reservation: room.getReservation()
+    };
+    getRoomDatas()[room.name] = roomData;
+  });
 }
 
 Creep.prototype.moveToAnd =

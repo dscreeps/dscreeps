@@ -5,7 +5,7 @@ module.exports = grunt => {
     pkg: grunt.file.readJSON('package.json'),
     concat: {
       options: {
-        banner: "'use strict';\n// <%= pkg.name %>.js v<%= pkg.version %>\n\n"
+        banner: "'use strict';\nmodule.exports.version = '<%= pkg.version %>';\n\n"
       },
       dist: {
         src: ['src/module.js', 'src/**/*.js'],
