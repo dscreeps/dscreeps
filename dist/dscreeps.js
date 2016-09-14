@@ -2,11 +2,51 @@
 module.exports.version = '0.3.0';
 
 module.exports.loop = config => {
-  memoryRoomDatas();
+  memoryRoomDatas(Game.rooms);
+  cleanupCreepDatas();
   _.each(Game.rooms, controlRoom);
 };
 
 function controlRoom(room) {}
+
+function cleanupCreepDatas() {
+  const creepDatas = getCreepDatas();
+  _.each(creepDatas, creepData => {
+    const difference = Game.time - creepData.lastTime;
+    if (creepData.ticksToLive - difference > 0) {
+      return;
+    }
+    delete creepDatas[creepData.id];
+  });
+}
+
+function getCreepDatas() {
+  Game.Memory.creepDatas = Game.Memory.creepDatas || {};
+  return Game.Memory.creepDatas;
+}
+
+function getDynamicCreepData(creep) {
+  return {
+    lastTime: Game.time,
+    ticksToLive: creep.ticksToLive
+  };
+}
+
+function getStaticCreepData() {
+  return {
+    id: creep.id
+  };
+}
+
+function memoryCreepDatas(creeps) {
+  const creepDatas = getCreepDatas();
+  _.each(creeps, creep => {
+    if (!creepDatas[creep.id]) {
+      creepDatas[creep.id] = getStaticCreepData(creep);
+    }
+    Object.assign(creepDatas[creep.id], getDynamicCreepData(creep));
+  });
+}
 
 function getMyUsername() {
   if (!Memory.myUsername) {
@@ -18,18 +58,64 @@ function getMyUsername() {
   return Memory.myUsername;
 }
 
+function getDynamicRoomData(room) {
+  const hostileCreeps = room.find(FIND_HOSTILE_CREEPS);
+  memoryCreepDatas(hostileCreeps);
+  return {
+    hostileCreeps: _.map(hostileCreeps, creep => creep.id),
+    lastTime: Game.time,
+    reservation: room.getReservation()
+  };
+}
+
 function getRoomDatas() {
   Game.Memory.roomDatas = Game.Memory.roomDatas || {};
   return Game.Memory.roomDatas;
 }
 
-function memoryRoomDatas() {
-  _.each(Game.rooms, room => {
-    const roomData = {
-      lastTime: Game.time,
-      reservation: room.getReservation()
-    };
-    getRoomDatas()[room.name] = roomData;
+function getStaticRoomData(room) {
+  const sources = room.find(FIND_SOURCES);
+  memorySourceDatas(sources);
+  return {
+    name: room.name,
+    sources: _.map(sources, source => source.id)
+  };
+}
+
+function memoryRoomDatas(rooms) {
+  const roomDatas = getRoomDatas();
+  _.each(rooms, room => {
+    if (!roomDatas[room.name]) {
+      roomDatas[room.name] = getStaticRoomData(room);
+    }
+    Object.assign(roomDatas[room.name], getDynamicRoomData(room));
+  });
+}
+
+function getDynamicSourceData(source) {
+  return {
+    lastTime: Game.time
+  };
+}
+
+function getSourceDatas() {
+  Game.Memory.sourceDatas = Game.Memory.sourceDatas || {};
+  return Game.Memory.sourceDatas;
+}
+
+function getStaticSourceData(source) {
+  return {
+    id: source.id
+  };
+}
+
+function memorySourceDatas(sources) {
+  const sourceDatas = getSourceDatas();
+  _.each(sources, source => {
+    if (!sourceDatas[source.id]) {
+      sourceDatas[source.id] = getStaticSourceData(source);
+    }
+    Object.assign(sourceDatas[source.id], getDynamicSourceData(source));
   });
 }
 

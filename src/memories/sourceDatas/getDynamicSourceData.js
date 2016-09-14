@@ -1,3 +1,5 @@
 function getDynamicSourceData(source) {
-  return {};
+  return {
+    lastTime: Game.time
+  };
 }

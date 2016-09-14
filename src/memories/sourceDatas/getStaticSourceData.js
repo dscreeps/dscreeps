@@ -1,3 +1,5 @@
 function getStaticSourceData(source) {
-  return {};
+  return {
+    id: source.id
+  };
 }
