@@ -1,0 +1,1 @@
+function controlTower(tower) {}

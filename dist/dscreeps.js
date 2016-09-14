@@ -4,10 +4,20 @@ module.exports.version = '0.3.0';
 module.exports.loop = config => {
   memoryRoomDatas(Game.rooms);
   cleanupCreepDatas();
+  _.each(Game.creeps, controlCreep);
   _.each(Game.rooms, controlRoom);
 };
 
-function controlRoom(room) {}
+function controlCreep(creep) {}
+
+function controlRoom(room) {
+  const towers = room.find(FIND_STRUCTURES, {
+    filter: structure => structure.structureType === STRUCTURE_TOWER
+  });
+  _.each(towers, controlTower);
+}
+
+function controlTower(tower) {}
 
 function cleanupCreepDatas() {
   const creepDatas = getCreepDatas();
