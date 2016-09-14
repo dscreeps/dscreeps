@@ -2,8 +2,8 @@ function memoryRoomDatas(rooms) {
   const roomDatas = getRoomDatas();
   _.each(rooms, room => {
     if (!roomDatas[room.name]) {
-      roomDatas[room.name] = room.getStaticMemoryData();
+      roomDatas[room.name] = getStaticRoomData(room);
     }
-    Object.assign(roomDatas[room.name], room.getDynamicMemoryData())
+    Object.assign(roomDatas[room.name], getDynamicRoomData(room));
   });
 }
