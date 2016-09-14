@@ -1,5 +1,5 @@
-function memoryRoomDatas() {
-  _.each(Game.rooms, room => {
+function memoryRoomDatas(rooms) {
+  _.each(rooms, room => {
     getRoomDatas()[room.name] = room.getMemoryData();
   });
 }

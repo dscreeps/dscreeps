@@ -1,4 +1,4 @@
 module.exports.loop = config => {
-  memoryRoomDatas();
+  memoryRoomDatas(Game.rooms);
   _.each(Game.rooms, controlRoom);
 };
