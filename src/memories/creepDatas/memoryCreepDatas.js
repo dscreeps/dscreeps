@@ -1,9 +1,9 @@
 function memoryCreepDatas(creeps) {
   const creepDatas = getCreepDatas();
   _.each(creeps, creep => {
-    if (creepDatas[creep.id]) {
-      return;
+    if (!creepDatas[creep.id]) {
+      creepDatas[creep.id] = creep.getStaticMemoryData();
     }
-    creepDatas[creep.id] = creep.getMemoryData();
+    Object.assign(creepDatas[creep.id], creep.getDynamicMemoryData())
   });
 }

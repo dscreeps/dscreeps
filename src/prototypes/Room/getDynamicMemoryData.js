@@ -1,4 +1,4 @@
-Room.prototype.getMemoryData =
+Room.prototype.getDynamicMemoryData =
   function () {
     const hostileCreeps = this.find(FIND_HOSTILE_CREEPS);
     memoryCreepDatas(hostileCreeps);

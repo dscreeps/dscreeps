@@ -1,7 +1,6 @@
-Creep.prototype.getMemoryData =
+Creep.prototype.getDynamicMemoryData =
   function () {
     return {
-      id: this.id,
       ticksToLive: this.ticksToLive
     };
   };
